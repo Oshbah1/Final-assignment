@@ -316,78 +316,94 @@ print(entertainer)
 
 # Output information about the Event and its composed EventAgenda
 print(event)
+
 import tkinter as tk
 from tkinter import messagebox
 import pickle
 import os
 
-# Entity class to represent different types of data entries
-class Entity:
-    def __init__(self, **kwargs):
-        self.__dict__.update(kwargs)
+# Define the path for your data files
+data_path = "data"
 
-# DataLayer class to handle data storage and retrieval
-class DataLayer:
-    def __init__(self, file_prefix):
-        self.file_prefix = file_prefix
+# Make sure the data directory exists
+os.makedirs(data_path, exist_ok=True)
 
-    def save(self, entity_type, data_dict):
-        with open(f'{self.file_prefix}_{entity_type}.pkl', 'wb') as file:
-            pickle.dump(data_dict, file)
+# Data Models
+class Employee:
+    def __init__(self, id_number, name, position):
+        self.id_number = id_number
+        self.name = name
+        self.position = position
 
-    def load(self, entity_type):
-        try:
-            with open(f'{self.file_prefix}_{entity_type}.pkl', 'rb') as file:
-                return pickle.load(file)
-        except FileNotFoundError:
-            return {}
+# Persistence Functions
+def save_data(obj, filename):
+    with open(filename, 'wb') as file:
+        pickle.dump(obj, file)
 
-# Main GUI class
-class ManagementSystemGUI:
-    def __init__(self, root, data_layer):
-        self.root = root
-        self.data_layer = data_layer
-        self.entities = {}
-        self.entity_type = tk.StringVar(self.root)
-        self.entity_type.set('employee')  # default value
+def load_data(filename):
+    if os.path.exists(filename):
+        with open(filename, 'rb') as file:
+            return pickle.load(file)
+    return {}
 
-        self.setup_gui()
+# Employee CRUD Operations
+def add_employee(id_number, name, position):
+    employees = load_data(os.path.join(data_path, 'employees.pkl'))
+    employees[id_number] = Employee(id_number, name, position)
+    save_data(employees, os.path.join(data_path, 'employees.pkl'))
 
-    def setup_gui(self):
-        # Dropdown menu to select entity type
-        entity_options = ['employee', 'event', 'client', 'guest', 'supplier', 'venue']
-        self.entity_type_menu = tk.OptionMenu(self.root, self.entity_type, *entity_options)
-        self.entity_type_menu.pack()
+def get_employee(id_number):
+    employees = load_data(os.path.join(data_path, 'employees.pkl'))
+    return employees.get(id_number)
 
-        # Buttons for operations
-        tk.Button(self.root, text="Add", command=self.add_entity).pack()
-        tk.Button(self.root, text="Delete", command=self.delete_entity).pack()
-        tk.Button(self.root, text="Modify", command=self.modify_entity).pack()
-        tk.Button(self.root, text="Display", command=self.display_entity).pack()
+# GUI Design
+class Application(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("The Best Events Company")
+        self.geometry("500x300")  # Adjust size as needed
 
-    def add_entity(self):
-        # TODO: Add logic to collect entity details from the user and store it
-        pass
+        # Labels and entry fields for the employee's details
+        tk.Label(self, text="ID Number").pack(pady=(10, 0))
+        self.id_entry = tk.Entry(self)
+        self.id_entry.pack()
 
-    def delete_entity(self):
-        # TODO: Add logic to delete an entity based on a unique identifier
-        pass
+        tk.Label(self, text="Name").pack(pady=(10, 0))
+        self.name_entry = tk.Entry(self)
+        self.name_entry.pack()
 
-    def modify_entity(self):
-        # TODO: Add logic to modify an existing entity's details
-        pass
+        tk.Label(self, text="Position").pack(pady=(10, 0))
+        self.position_entry = tk.Entry(self)
+        self.position_entry.pack()
 
-    def display_entity(self):
-        # TODO: Add logic to display an entity's details
-        pass
+        tk.Label(self, text="Email").pack(pady=(10, 0))
+        self.email_entry = tk.Entry(self)
+        self.email_entry.pack()
 
-# Example usage
+        # Add more fields as needed...
+
+        # Button to trigger the addition of a new employee
+        add_button = tk.Button(self, text="Add Employee", command=self.add_employee)
+        add_button.pack(pady=(10, 0))
+
+
+    def add_employee(self):
+        id_number = self.id_entry.get()
+        name = self.name_entry.get()
+        position = self.position_entry.get()
+
+        if not id_number or not name or not position:
+            messagebox.showerror("Error", "All fields are required")
+            return
+
+        add_employee(id_number, name, position)
+        messagebox.showinfo("Success", f"Employee {name} added successfully")
+
+# Run the application
 if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("Management System")
-    data_layer = DataLayer(file_prefix='data')
-    app = ManagementSystemGUI(root, data_layer)
-    root.mainloop()
+    app = Application()
+    app.mainloop()
+
 
 
 
