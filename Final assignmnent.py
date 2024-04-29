@@ -13,6 +13,7 @@ class Employee:
     def __str__(self):
         return f"Employee Name: {self.name}, ID: {self.employee_id}, Department: {self.department}"
 
+
 # Accountant class inherits from Employee
 class Accountant(Employee):
     def __init__(self, name, employee_id, department, certifications):
@@ -22,15 +23,16 @@ class Accountant(Employee):
     def __str__(self):
         return super().__str__() + f", Certifications: {self.certifications}"
 
+
 # Marketer class inherits from Employee
 class Marketer(Employee):
-    # Additional marketer-specific attributes and methods can be added here
     pass
+
 
 # Handyman class inherits from Employee
 class Handyman(Employee):
-    # Additional handyman-specific attributes and methods can be added here
     pass
+
 
 # Salesperson class inherits from Employee
 class Salesperson(Employee):
@@ -41,6 +43,7 @@ class Salesperson(Employee):
     def __str__(self):
         return super().__str__() + f", Sales Target: {self.sales_target}"
 
+
 # SalesManager class inherits from Salesperson
 class SalesManager(Salesperson):
     def __init__(self, name, employee_id, department, sales_target, team_size):
@@ -50,6 +53,7 @@ class SalesManager(Salesperson):
     def __str__(self):
         return super().__str__() + f", Team Size: {self.team_size}"
 
+
 # Designer class inherits from Employee
 class Designer(Employee):
     def __init__(self, name, employee_id, department, portfolio):
@@ -58,6 +62,7 @@ class Designer(Employee):
 
     def __str__(self):
         return super().__str__() + f", Portfolio: {self.portfolio}"
+
 
 # Main program where we will create the instances or objects of the classes
 if __name__ == "__main__":
@@ -72,6 +77,7 @@ if __name__ == "__main__":
     for employee in [accountant, marketer, handyman, salesperson, sales_manager, designer]:
         print(employee)
         print()  # Adding a newline for better readability
+
 
 class SalesPerson:
     def __init__(self, name, clients=None):
@@ -92,6 +98,7 @@ class SalesPerson:
         # String representation of SalesPerson and their associated clients
         return f"SalesPerson {self.name} manages clients: {self.get_clients()}"
 
+
 class Client:
     def __init__(self, name, sales_person=None):
         # Client constructor with an optional reference to a SalesPerson
@@ -107,6 +114,7 @@ class Client:
         # String representation of Client and their associated SalesPerson
         return f"Client {self.name} managed by SalesPerson: {self.sales_person.name if self.sales_person else 'None'}"
 
+
 # Main program
 s1 = SalesPerson("Alice")
 c1 = Client("XYZ Corp")
@@ -116,6 +124,8 @@ c1.assign_sales_person(s1)  # This line creates the association as per the sampl
 
 print(s1)  # Output information about the SalesPerson and their associated clients
 print(c1)  # Output information about the
+
+
 class Event:
     def __init__(self, event_id, date):
         self.event_id = event_id
@@ -127,6 +137,7 @@ class Event:
 
     def __str__(self):
         return f"Event {self.event_id} on date {self.date}"
+
 
 class FurnitureSupplier:
     def __init__(self, supplier_id):
@@ -145,16 +156,20 @@ class FurnitureSupplier:
     def __str__(self):
         return f"FurnitureSupplier {self.supplier_id}"
 
+
 # Main program
 event = Event("E123", "2024-05-01")
 supplier = FurnitureSupplier("S456")
 
 # Event renting furniture from the supplier
-event.rent_furniture(supplier, ["Chairs", "Stage"])  # This operation demonstrates the dependency of Event on FurnitureSupplier
+event.rent_furniture(supplier,
+                     ["Chairs", "Stage"])  # This operation demonstrates the dependency of Event on FurnitureSupplier
 
 # Output information about the Event and FurnitureSupplier
 print(event)
 print(supplier)
+
+
 class Event:
     def __init__(self, event_id, date):
         self.event_id = event_id
@@ -171,6 +186,7 @@ class Event:
     def __str__(self):
         return f"Event {self.event_id} on date {self.date}"
 
+
 class Supplier:
     def __init__(self, name, supplies):
         self.name = name
@@ -179,12 +195,14 @@ class Supplier:
     def __str__(self):
         return f"Supplier {self.name}, Supplies: {self.supplies}"
 
+
 class Guest:
     def __init__(self, name):
         self.name = name
 
     def __str__(self):
         return f"Guest {self.name}"
+
 
 # Main program
 event = Event("E123", "2024-05-01")
@@ -211,6 +229,8 @@ for supplier in event.suppliers:
 
 for guest in event.guests:
     print(guest)
+
+
 class Event:
     def __init__(self, event_id, date):
         self.event_id = event_id
@@ -224,6 +244,7 @@ class Event:
     def __str__(self):
         return f"Event {self.event_id} on {self.date} with Agenda: {self.agenda}"
 
+
 class EventAgenda:
     def __init__(self):
         self.items = []  # List of agenda items
@@ -234,6 +255,7 @@ class EventAgenda:
     def __str__(self):
         return f"{[f'{item['start_time']} to {item['end_time']}: {item['description']}' for item in self.items]}"
 
+
 # Main program - Only the Event is created here, not the EventAgenda, which is created by the Event itself
 event = Event("E123", "2024-05-01")
 
@@ -241,6 +263,8 @@ event = Event("E123", "2024-05-01")
 event.add_agenda_item("09:00", "10:00", "Opening Ceremony")
 event.add_agenda_item("10:00", "12:00", "Guest Speaker Session")
 event.add_agenda_item("12:00", "13:00", "Lunch Break")
+
+
 # Base class for all suppliers
 class Supplier:
     def __init__(self, supplier_id, name, address, contact_details):
@@ -260,6 +284,7 @@ class Supplier:
         # String representation of a Supplier
         return f"{self.name} ({self.supplier_id})"
 
+
 # Inherited class from Supplier for Venue
 class Venue(Supplier):
     def __init__(self, supplier_id, name, address, contact_details, capacity):
@@ -272,20 +297,21 @@ class Venue(Supplier):
         # Extend the string representation with capacity information
         return super().__str__() + f", Capacity: {self.capacity}"
 
+
 # Inherited class from Supplier for Caterer
 class Caterer(Supplier):
-    # Additional attributes or methods for Caterer can be added here
     pass
+
 
 # Inherited class from Supplier for Cleaner
 class Cleaner(Supplier):
-    # Additional attributes or methods for Cleaner can be added here
     pass
+
 
 # Inherited class from Supplier for Decorator
 class Decorator(Supplier):
-    # Additional attributes or methods for Decorator can be added here
     pass
+
 
 # Inherited class from Supplier for Entertainer
 class Entertainer(Supplier):
@@ -297,6 +323,7 @@ class Entertainer(Supplier):
     def __str__(self):
         # Extend the string representation with genre information
         return super().__str__() + f", Genre: {self.genre}"
+
 
 # Main program
 # Creating instances of the subclasses
@@ -313,97 +340,150 @@ print(cleaner)
 print(decorator)
 print(entertainer)
 
-
 # Output information about the Event and its composed EventAgenda
 print(event)
 
+# Importing the necessary libraries for the program
 import tkinter as tk
 from tkinter import messagebox
 import pickle
 import os
 
-# Define the path for your data files
+# Defining the path where data files will be stored
 data_path = "data"
-
-# Make sure the data directory exists
 os.makedirs(data_path, exist_ok=True)
 
-# Data Models
+# Class to represent an Employee
 class Employee:
-    def __init__(self, id_number, name, position):
+    def __init__(self, id_number, name, position, email):
         self.id_number = id_number
         self.name = name
         self.position = position
+        self.email = email
 
-# Persistence Functions
-def save_data(obj, filename):
-    with open(filename, 'wb') as file:
-        pickle.dump(obj, file)
+    def __str__(self):
+        return f"{self.name} ({self.id_number})"
 
-def load_data(filename):
-    if os.path.exists(filename):
-        with open(filename, 'rb') as file:
-            return pickle.load(file)
-    return {}
-
-# Employee CRUD Operations
-def add_employee(id_number, name, position):
-    employees = load_data(os.path.join(data_path, 'employees.pkl'))
-    employees[id_number] = Employee(id_number, name, position)
-    save_data(employees, os.path.join(data_path, 'employees.pkl'))
-
-def get_employee(id_number):
-    employees = load_data(os.path.join(data_path, 'employees.pkl'))
-    return employees.get(id_number)
-
-# GUI Design
+# Class representing the main application window
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("The Best Events Company")
-        self.geometry("500x300")  # Adjust size as needed
+        self.title("Employee Management System")
+        self.geometry("400x300")
+        self.create_widgets()
 
-        # Labels and entry fields for the employee's details
-        tk.Label(self, text="ID Number").pack(pady=(10, 0))
+    # Method to create all the GUI widgets and layout
+    def create_widgets(self):
+        # Labels and entry fields for employee details
+        tk.Label(self, text="ID Number").pack(pady=5)
         self.id_entry = tk.Entry(self)
         self.id_entry.pack()
 
-        tk.Label(self, text="Name").pack(pady=(10, 0))
+        tk.Label(self, text="Name").pack(pady=5)
         self.name_entry = tk.Entry(self)
         self.name_entry.pack()
 
-        tk.Label(self, text="Position").pack(pady=(10, 0))
+        tk.Label(self, text="Position").pack(pady=5)
         self.position_entry = tk.Entry(self)
         self.position_entry.pack()
 
-        tk.Label(self, text="Email").pack(pady=(10, 0))
+        tk.Label(self, text="Email").pack(pady=5)
         self.email_entry = tk.Entry(self)
         self.email_entry.pack()
 
-        # Add more fields as needed...
-
-        # Button to trigger the addition of a new employee
+        # Buttons for various actions
         add_button = tk.Button(self, text="Add Employee", command=self.add_employee)
-        add_button.pack(pady=(10, 0))
+        add_button.pack(pady=10)
 
+        delete_button = tk.Button(self, text="Delete Employee", command=self.delete_employee)
+        delete_button.pack(pady=5)
 
+        update_button = tk.Button(self, text="Update Employee", command=self.update_employee)
+        update_button.pack(pady=5)
+
+        display_button = tk.Button(self, text="Display Employee", command=self.display_employee)
+        display_button.pack(pady=5)
+
+    # Method to add a new employee
     def add_employee(self):
-        id_number = self.id_entry.get()
-        name = self.name_entry.get()
-        position = self.position_entry.get()
+        id_number = self.id_entry.get().strip()
+        name = self.name_entry.get().strip()
+        position = self.position_entry.get().strip()
+        email = self.email_entry.get().strip()
 
-        if not id_number or not name or not position:
-            messagebox.showerror("Error", "All fields are required")
+        # Basic input validation
+        if not all([id_number, name, position, email]):
+            messagebox.showerror("Error", "All fields are required.")
             return
 
-        add_employee(id_number, name, position)
-        messagebox.showinfo("Success", f"Employee {name} added successfully")
+        employees = load_data("employees.pkl")
+        if id_number in employees:
+            messagebox.showerror("Error", "Employee ID already exists.")
+        else:
+            employees[id_number] = Employee(id_number, name, position, email)
+            save_data(employees, "employees.pkl")
+            messagebox.showinfo("Success", f"Employee {name} added successfully")
 
-# Run the application
+    # Method to delete an existing employee
+    def delete_employee(self):
+        id_number = self.id_entry.get().strip()
+        if not id_number:
+            messagebox.showerror("Error", "Please enter the employee ID to delete.")
+            return
+
+        employees = load_data("employees.pkl")
+        if id_number in employees:
+            del employees[id_number]
+            save_data(employees, "employees.pkl")
+            messagebox.showinfo("Success", f"Employee ID {id_number} has been deleted.")
+        else:
+            messagebox.showerror("Error", "Employee not found.")
+
+    # Method to update employee details
+    def update_employee(self):
+        id_number = self.id_entry.get().strip()
+        employees = load_data("employees.pkl")
+        if id_number in employees:
+            name = self.name_entry.get().strip()
+            position = self.position_entry.get().strip()
+            email = self.email_entry.get().strip()
+
+            if name:
+                employees[id_number].name = name
+            if position:
+                employees[id_number].position = position
+            if email:
+                employees[id_number].email = email
+
+            save_data(employees, "employees.pkl")
+            messagebox.showinfo("Success", f"Employee ID {id_number} has been updated.")
+        else:
+            messagebox.showerror("Error", "Employee not found.")
+
+    # Method to display employee details
+    def display_employee(self):
+        id_number = self.id_entry.get().strip()
+        employees = load_data("employees.pkl")
+        if id_number in employees:
+            employee = employees[id_number]
+            messagebox.showinfo("Employee Details", f"ID: {employee.id_number}\nName: {employee.name}\nPosition: {employee.position}\nEmail: {employee.email}")
+        else:
+            messagebox.showerror("Error", "Employee not found.")
+
+# Function to save data to a file using pickle
+def save_data(data, filename):
+    with open(os.path.join(data_path, filename), 'wb') as file:
+        pickle.dump(data, file)
+
+# Function to load data from a file using pickle
+def load_data(filename):
+    filepath = os.path.join(data_path, filename)
+    if os.path.exists(filepath):
+        with open(filepath, 'rb') as file:
+            return pickle.load(file)
+    return {}
+
+# Main program entry point
 if __name__ == "__main__":
     app = Application()
     app.mainloop()
-
-
-
-
