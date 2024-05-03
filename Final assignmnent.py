@@ -1,27 +1,56 @@
 # Base class Employee
 class Employee:
     def __init__(self, name, employee_id, department):
-        self.name = name
-        self.employee_id = employee_id
-        self.department = department
+        self._name = name
+        self._employee_id = employee_id
+        self._department = department
+
+    # Getters for name, employee_id, and department properties
+    def get_name(self):
+        return self._name
+
+    def get_employee_id(self):
+        return self._employee_id
+
+    def get_department(self):
+        return self._department
+
+    # Setters for name, employee_id, and department properties
+    def set_name(self, name):
+        self._name = name
+
+    def set_employee_id(self, employee_id):
+        self._employee_id = employee_id
+
+    def set_department(self, department):
+        self._department = department
 
     def print_details(self):
-        print(f"Employee ID: {self.employee_id}")
-        print(f"Name: {self.name}")
-        print(f"Department: {self.department}")
+        print(f"Employee ID: {self._employee_id}")
+        print(f"Name: {self._name}")
+        print(f"Department: {self._department}")
 
     def __str__(self):
-        return f"Employee Name: {self.name}, ID: {self.employee_id}, Department: {self.department}"
+        return f"Employee Name: {self._name}, ID: {self._employee_id}, Department: {self._department}"
 
 
+# Accountant class inherits from Employee
 # Accountant class inherits from Employee
 class Accountant(Employee):
     def __init__(self, name, employee_id, department, certifications):
         super().__init__(name, employee_id, department)
-        self.certifications = certifications
+        self._certifications = certifications
+
+    # Getter for certifications property
+    def get_certifications(self):
+        return self._certifications
+
+    # Setter for certifications property
+    def set_certifications(self, certifications):
+        self._certifications = certifications
 
     def __str__(self):
-        return super().__str__() + f", Certifications: {self.certifications}"
+        return super().__str__() + f", Certifications: {self._certifications}"
 
 
 # Marketer class inherits from Employee
