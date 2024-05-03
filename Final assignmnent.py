@@ -344,146 +344,234 @@ print(entertainer)
 print(event)
 
 # Importing the necessary libraries for the program
+
 import tkinter as tk
 from tkinter import messagebox
 import pickle
 import os
 
-# Defining the path where data files will be stored
 data_path = "data"
 os.makedirs(data_path, exist_ok=True)
 
-# Class to represent an Employee
-class Employee:
-    def __init__(self, id_number, name, position, email):
-        self.id_number = id_number
+
+class Event:
+    def __init__(self, event_id, name, location, date):
+        self.event_id = event_id
         self.name = name
-        self.position = position
-        self.email = email
+        self.location = location
+        self.date = date
 
-    def __str__(self):
-        return f"{self.name} ({self.id_number})"
 
-# Class representing the main application window
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("Employee Management System")
+        self.title("Management System")
         self.geometry("400x300")
         self.create_widgets()
 
-    # Method to create all the GUI widgets and layout
     def create_widgets(self):
-        # Labels and entry fields for employee details
-        tk.Label(self, text="ID Number").pack(pady=5)
+        tk.Label(self, text="Select Entity to Manage:").pack(pady=5)
+
+        entities = ["Employee", "Event", "Client", "Supplier", "Guest", "Venue"]
+        self.entity_var = tk.StringVar(self)
+        self.entity_var.set(entities[0])
+
+        entity_option_menu = tk.OptionMenu(self, self.entity_var, *entities)
+        entity_option_menu.pack()
+
+        tk.Label(self, text="Enter ID Number").pack(pady=5)
         self.id_entry = tk.Entry(self)
         self.id_entry.pack()
 
-        tk.Label(self, text="Name").pack(pady=5)
+        tk.Label(self, text="Enter Name").pack(pady=5)
         self.name_entry = tk.Entry(self)
         self.name_entry.pack()
 
-        tk.Label(self, text="Position").pack(pady=5)
+        tk.Label(self, text="Enter Position/Location").pack(pady=5)
         self.position_entry = tk.Entry(self)
         self.position_entry.pack()
 
-        tk.Label(self, text="Email").pack(pady=5)
+        tk.Label(self, text="Enter Email").pack(pady=5)
         self.email_entry = tk.Entry(self)
         self.email_entry.pack()
 
-        # Buttons for various actions
-        add_button = tk.Button(self, text="Add Employee", command=self.add_employee)
+        add_button = tk.Button(self, text="Add", command=self.add_entity)
         add_button.pack(pady=10)
 
-        delete_button = tk.Button(self, text="Delete Employee", command=self.delete_employee)
+        delete_button = tk.Button(self, text="Delete", command=self.delete_entity)
         delete_button.pack(pady=5)
 
-        update_button = tk.Button(self, text="Update Employee", command=self.update_employee)
+        update_button = tk.Button(self, text="Update", command=self.update_entity)
         update_button.pack(pady=5)
 
-        display_button = tk.Button(self, text="Display Employee", command=self.display_employee)
+        display_button = tk.Button(self, text="Display Details", command=self.display_details)
         display_button.pack(pady=5)
 
-    # Method to add a new employee
-    def add_employee(self):
-        id_number = self.id_entry.get().strip()
-        name = self.name_entry.get().strip()
-        position = self.position_entry.get().strip()
-        email = self.email_entry.get().strip()
+        next_page_button = tk.Button(self, text="Next Page", command=self.open_next_page)
+        next_page_button.pack(pady=5)
 
-        # Basic input validation
-        if not all([id_number, name, position, email]):
-            messagebox.showerror("Error", "All fields are required.")
-            return
+    def add_entity(self):
+        # Implement the add_entity function
+        pass
 
-        employees = load_data("employees.pkl")
-        if id_number in employees:
-            messagebox.showerror("Error", "Employee ID already exists.")
+    def delete_entity(self):
+        # Implement the delete_entity function
+        pass
+
+    def update_entity(self):
+        # Implement the update_entity function
+        pass
+
+    def display_details(self):
+        # Implement the display_details function
+        pass
+
+    def load_data(self, filename):
+        # Implement data loading function
+        pass
+
+    def save_data(self, data, filename):
+        # Implement data saving function
+        pass
+
+    def open_next_page(self):
+        new_window = tk.Toplevel(self)
+        NextPage(new_window)
+
+
+class NextPage:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("Details Page")
+
+        tk.Label(self.master, text="Enter Event ID:").pack(pady=10)
+        self.event_id_entry = tk.Entry(self.master)
+        self.event_id_entry.pack()
+
+        event_details_button = tk.Button(self.master, text="Get Event Details", command=self.get_event_details)
+        event_details_button.pack(pady=10)
+
+        tk.Label(self.master, text="Enter Client ID:").pack(pady=10)
+        self.client_id_entry = tk.Entry(self.master)
+        self.client_id_entry.pack()
+
+        client_details_button = tk.Button(self.master, text="Get Client Details", command=self.get_client_details)
+        client_details_button.pack(pady=10)
+
+        # Adding Supplier ID input and button
+        tk.Label(self.master, text="Enter Supplier ID:").pack(pady=10)
+        self.supplier_id_entry = tk.Entry(self.master)
+        self.supplier_id_entry.pack()
+
+        supplier_details_button = tk.Button(self.master, text="Get Supplier Details",
+                                            command=self.display_supplier_details)
+        supplier_details_button.pack(pady=10)
+        # Widgets for Guest ID
+        tk.Label(self.master, text="Enter Guest ID:").pack(pady=10)
+        self.guest_id_entry = tk.Entry(self.master)
+        self.guest_id_entry.pack()
+
+        guest_details_button = tk.Button(self.master, text="Get Guest Details", command=self.display_guest_details)
+        guest_details_button.pack(pady=10)
+
+        # Widgets for Venue ID
+        tk.Label(self.master, text="Enter Venue ID:").pack(pady=10)
+        self.venue_id_entry = tk.Entry(self.master)
+        self.venue_id_entry.pack()
+
+        venue_details_button = tk.Button(self.master, text="Get Venue Details", command=self.display_venue_details)
+        venue_details_button.pack(pady=10)
+    def get_event_details(self):
+        event_id = self.event_id_entry.get().strip()
+        # Display  details for event E001
+        if event_id == "E001":
+            event = Event("E001", "Sample Event", "Sample Location", "2022-12-31")
+            details = f"Event ID: {event.event_id}\nName: {event.name}\nLocation: {event.location}\nDate: {event.date}"
+            messagebox.showinfo("Event Details", details)
         else:
-            employees[id_number] = Employee(id_number, name, position, email)
-            save_data(employees, "employees.pkl")
-            messagebox.showinfo("Success", f"Employee {name} added successfully")
+            messagebox.showerror("Error", "Event details not found.")
 
-    # Method to delete an existing employee
-    def delete_employee(self):
-        id_number = self.id_entry.get().strip()
-        if not id_number:
-            messagebox.showerror("Error", "Please enter the employee ID to delete.")
-            return
-
-        employees = load_data("employees.pkl")
-        if id_number in employees:
-            del employees[id_number]
-            save_data(employees, "employees.pkl")
-            messagebox.showinfo("Success", f"Employee ID {id_number} has been deleted.")
+    def get_client_details(self):
+        client_id = self.client_id_entry.get().strip()
+        # Display  details for client E001
+        if client_id == "E001":
+            client = Client("E001", "Maria,", "Maria@client.com")
+            details = f"Client ID: {client.id_number}\nName: {client.name}\nEmail: {client.email}"
+            messagebox.showinfo("Client Details", details)
         else:
-            messagebox.showerror("Error", "Employee not found.")
+            messagebox.showerror("Error", "Client details not found.")
 
-    # Method to update employee details
-    def update_employee(self):
-        id_number = self.id_entry.get().strip()
-        employees = load_data("employees.pkl")
-        if id_number in employees:
-            name = self.name_entry.get().strip()
-            position = self.position_entry.get().strip()
-            email = self.email_entry.get().strip()
-
-            if name:
-                employees[id_number].name = name
-            if position:
-                employees[id_number].position = position
-            if email:
-                employees[id_number].email = email
-
-            save_data(employees, "employees.pkl")
-            messagebox.showinfo("Success", f"Employee ID {id_number} has been updated.")
+    def display_guest_details(self):
+        guest_id = self.guest_id_entry.get().strip()
+        # Mock function to simulate fetching guest details
+        if guest_id == "E001":
+            messagebox.showinfoguests = {
+    "G001": {"name": "Alice", "email": "alice@example.com", "phone": "123-456-7890", "additional_info": "VIP Guest"},
+    "G002": {"name": "Bob", "email": "bob@example.com", "phone": "234-567-8901", "additional_info": "Regular attendee"},
+    "G003": {"name": "Charli", "email": "charli@example.com", "phone": "345-678-9012", "additional_info": "First-time attendee"}}
         else:
-            messagebox.showerror("Error", "Employee not found.")
+            messagebox.showerror("Error", "Guest details not found.")
 
-    # Method to display employee details
-    def display_employee(self):
-        id_number = self.id_entry.get().strip()
-        employees = load_data("employees.pkl")
-        if id_number in employees:
-            employee = employees[id_number]
-            messagebox.showinfo("Employee Details", f"ID: {employee.id_number}\nName: {employee.name}\nPosition: {employee.position}\nEmail: {employee.email}")
+            def show_guest_details():
+                guest_id = id_entry.get().strip()
+                guest = guests.get(guest_id)
+                if guest:
+                    details = (
+                        f"Name: {guest['name']}\n"
+                        f"Email: {guest['email']}\n"
+                        f"Phone: {guest['phone']}\n"
+                        f"Status: {guest['additional_info']}"
+                    )
+                    messagebox.showinfo("Guest Details", details)
+                else:
+                    messagebox.showerror("Error", "Guest details not found for ID: " + guest_id)
+
+
+
+    def display_venue_details(self):
+        venue_id = self.venue_id_entry.get().strip()
+        # Mock function to simulate fetching venue details
+        if venue_id == "E001":
+            messagebox.showinfo("Venue Details",
+                                "Details for Venue ID: V001: Name: Grand Hall, Location: Downtown, Capacity: 300")
         else:
-            messagebox.showerror("Error", "Employee not found.")
+            messagebox.showerror("Error", "Venue details not found.")
 
-# Function to save data to a file using pickle
-def save_data(data, filename):
-    with open(os.path.join(data_path, filename), 'wb') as file:
-        pickle.dump(data, file)
 
-# Function to load data from a file using pickle
-def load_data(filename):
-    filepath = os.path.join(data_path, filename)
-    if os.path.exists(filepath):
-        with open(filepath, 'rb') as file:
-            return pickle.load(file)
-    return {}
 
-# Main program entry point
+    def display_supplier_details(self):
+        supplier_id = self.supplier_id_entry.get().strip()
+        entities = self.load_data("suppliers.pkl")
+        if supplier_id in entities:
+            supplier = entities[supplier_id]
+            details = f"ID: {supplier.id_number}, Name: {supplier.name}, Email: {supplier.email}"
+            messagebox.showinfo("Supplier Details", details)
+        else:
+            messagebox.showerror("Error", "Supplier not found.")
+
+    def get_event_details(self):
+        event_id = self.event_id_entry.get().strip()
+        # Mock function to simulate fetching event details
+        if event_id == "E001":
+            messagebox.showinfo("Event Details", "Details for Event ID: E001")
+        else:
+            messagebox.showerror("Error", "Event details not found.")
+
+    def get_client_details(self):
+        client_id = self.client_id_entry.get().strip()
+        # Mock function to simulate fetching client details
+        if client_id == "C001":
+            messagebox.showinfo("Client Details", "Details for Client ID: C001")
+        else:
+            messagebox.showerror("Error", "Client details not found.")
+
+    def display_supplier_details(self):
+        supplier_id = self.supplier_id_entry.get().strip()
+        # Mock function to simulate fetching supplier details
+        if supplier_id == "E001":
+            messagebox.showinfo("Supplier A", "Supplies: ['Chairs', 'Tables']")
+        else:
+            messagebox.showerror("Error", "Supplier not found.")
 if __name__ == "__main__":
     app = Application()
     app.mainloop()
