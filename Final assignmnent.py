@@ -383,12 +383,21 @@ data_path = "data"
 os.makedirs(data_path, exist_ok=True)
 
 
-class Event:
-    def __init__(self, event_id, name, location, date):
-        self.event_id = event_id
+class Entity:
+    def __init__(self, entity_type, id_number, name, location, email):
+        self.entity_type = entity_type
+        self.id_number = id_number
         self.name = name
         self.location = location
-        self.date = date
+        self.email = email
+
+    def to_dict(self):
+        return {
+            "ID": self.id_number,
+            "Name": self.name,
+            "Location": self.location,
+            "Email": self.email
+        }
 
 
 class Application(tk.Tk):
@@ -440,29 +449,59 @@ class Application(tk.Tk):
         next_page_button.pack(pady=5)
 
     def add_entity(self):
-        # Implement the add_entity function
-        pass
+        entity_type = self.entity_var.get()
+        entity = Entity(entity_type, self.id_entry.get(), self.name_entry.get(), self.position_entry.get(),
+                        self.email_entry.get())
+
+        filename = os.path.join(data_path, f"{entity_type}_data.pkl")
+        try:
+            with open(filename, 'wb') as file:
+                pickle.dump(entity.to_dict(), file)
+            messagebox.showinfo("Success", f"{entity_type} added successfully.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to add {entity_type}: {str(e)}")
 
     def delete_entity(self):
-        # Implement the delete_entity function
-        pass
+        entity_type = self.entity_var.get()
+        filename = os.path.join(data_path, f"{entity_type}_data.pkl")
+        try:
+            os.remove(filename)
+            messagebox.showinfo("Success", f"{entity_type} data deleted successfully.")
+        except FileNotFoundError:
+            messagebox.showerror("Error", f"No {entity_type} data found.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to delete {entity_type}: {str(e)}")
 
     def update_entity(self):
-        # Implement the update_entity function
-        pass
+        entity_type = self.entity_var.get()
+        entity = Entity(entity_type, self.id_entry.get(), self.name_entry.get(), self.position_entry.get(),
+                        self.email_entry.get())
+
+        filename = os.path.join(data_path, f"{entity_type}_data.pkl")
+        try:
+            with open(filename, 'wb') as file:
+                pickle.dump(entity.to_dict(), file)
+            messagebox.showinfo("Success", f"{entity_type} data updated successfully.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to update {entity_type}: {str(e)}")
 
     def display_details(self):
-        # Implement the display_details function
-        pass
+        entity_type = self.entity_var.get()
+        filename = os.path.join(data_path, f"{entity_type}_data.pkl")
+        try:
+            with open(filename, 'rb') as file:
+                data = pickle.load(file)
+                messagebox.showinfo(f"{entity_type} Details", f"{entity_type} Data:\n{data}")
+        except FileNotFoundError:
+            messagebox.showerror("Error", f"No {entity_type} data found.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to display {entity_type} details: {str(e)}")
 
-    def load_data(self, filename):
-        # Implement data loading function
-        pass
-
-    def save_data(self, data, filename):
-        # Implement data saving function
-        pass
-
+    def open_next_page(self):
+        next_page = NextPage(self)
+        self.withdraw()
+        next_page.mainloop()
+        self.deiconify()
     def open_next_page(self):
         new_window = tk.Toplevel(self)
         NextPage(new_window)
@@ -516,7 +555,7 @@ class NextPage:
         if event_id == "E001":
             event = Event("E001", "Sample Event", "Sample Location", "2022-12-31")
             details = f"Event ID: {event.event_id}\nName: {event.name}\nLocation: {event.location}\nDate: {event.date}"
-            messagebox.showinfo("Event Details", details)
+            messagebox.showinfo("MetGala,Newyork,Manhattan,2,1,2025,floral theme", details)
         else:
             messagebox.showerror("Error", "Event details not found.")
 
@@ -532,7 +571,7 @@ class NextPage:
 
     def display_guest_details(self):
         guest_id = self.guest_id_entry.get().strip()
-        # Mock function to simulate fetching guest details
+        #  function to simulate fetching guest details
         if guest_id == "E001":
             messagebox.showinfoguests = {
     "G001": {"name": "Alice", "email": "alice@example.com", "phone": "123-456-7890", "additional_info": "VIP Guest"},
@@ -580,27 +619,52 @@ class NextPage:
 
     def get_event_details(self):
         event_id = self.event_id_entry.get().strip()
-        # Mock function to simulate fetching event details
+        #  function to simulate fetching event details
         if event_id == "E001":
-            messagebox.showinfo("Event Details", "Details for Event ID: E001")
+            messagebox.showinfo("Event Details", "New York,Manhattan,2,1,2025, floral times")
         else:
             messagebox.showerror("Error", "Event details not found.")
 
     def get_client_details(self):
         client_id = self.client_id_entry.get().strip()
         # Mock function to simulate fetching client details
-        if client_id == "C001":
-            messagebox.showinfo("Client Details", "Details for Client ID: C001")
+        if client_id == "E001":
+            messagebox.showinfo("Client Details", "Meera,has an event that holds 200 guests,paid the deposit,choose a floral theme,agreed on a certain budget")
         else:
             messagebox.showerror("Error", "Client details not found.")
 
     def display_supplier_details(self):
         supplier_id = self.supplier_id_entry.get().strip()
-        # Mock function to simulate fetching supplier details
+        #  function to simulate fetching supplier details
         if supplier_id == "E001":
-            messagebox.showinfo("Supplier A", "Supplies: ['Chairs', 'Tables']")
+            messagebox.showinfo("Supplier A", "Supplies chairs and tables flowers and plates and supplies entertainment center for the client")
         else:
             messagebox.showerror("Error", "Supplier not found.")
+
+    class EventDetails:
+
+        def __init__(self, guest_id_entry, venue_id_entry):
+            self.guest_id_entry = guest_id_entry
+            self.venue_id_entry = venue_id_entry
+
+        def display_guest_details(self):
+            guest_id = self.guest_id_entry.get().strip()
+            if guest_id == "E001":
+                messagebox.showinfo("Guest A", "Attending as a VIP guest with a plus one.")
+            else:
+                messagebox.showerror("Error", "Guest not found.")
+
+        def display_venue_details(self):
+            venue_id = self.venue_id_entry.get().strip()
+            if venue_id == "E001":
+                messagebox.showinfo("Venue X", "Located in downtown area, capacity of 200 people.")
+            else:
+                messagebox.showerror("Error", "Venue not found.")
+
+    # Example usage:
+    # event = EventDetails(guest_id_entry, venue_id_entry)
+    # event.display_guest_details()
+    # event.display_venue_details()
 if __name__ == "__main__":
     app = Application()
     app.mainloop()
